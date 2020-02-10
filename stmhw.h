@@ -16,8 +16,6 @@ class AxisHw
 private:
     uint8_t _addr;
 
-    static inline void waitForData();
-
 public:
     AxisHw (uint8_t addr) : _addr (addr) {}
 

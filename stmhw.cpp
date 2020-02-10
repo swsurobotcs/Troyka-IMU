@@ -27,10 +27,7 @@ int16_t AxisHw::readAxis(uint8_t reg) {
     return ((int16_t)readByte(reg + 1) << 8) | readByte(reg);
 }
 
-inline void AxisHw::waitForData() {
-    while (WIRE_IMU.available() < 1)
-        continue;
-}
+
 
 uint8_t AxisHw::readByte(uint8_t reg) {
     uint8_t value;
@@ -38,7 +35,6 @@ uint8_t AxisHw::readByte(uint8_t reg) {
     WIRE_IMU.write(reg);
     WIRE_IMU.endTransmission();
     WIRE_IMU.requestFrom(_addr, 1u);
-    waitForData();
     value = WIRE_IMU.read();
     return value;
 }
@@ -52,7 +48,6 @@ void AxisHw::readXYZ(int16_t *x, int16_t *y, int16_t *z) {
     WIRE_IMU.requestFrom(_addr, burstSize);
     uint8_t values[burstSize];
     for (uint8_t i = 0; i < burstSize; i++) {
-        waitForData();
         values[i] = WIRE_IMU.read();
     }
     
